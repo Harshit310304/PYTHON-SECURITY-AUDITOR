@@ -1,0 +1,11 @@
+base_path = input("Enter the path to scan (e.g., C:/Users/YourName/Documents): ")
+results = scan_directory(base_path)
+
+if results:
+    print("\n⚠️ Suspicious Files Found:")
+    for r in results:
+        print(f"- {r[0]} --> {r[1]}")
+else:
+    print("\n✅ No issues detected.")
+
+generate_report(results)
