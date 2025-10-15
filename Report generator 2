@@ -1,0 +1,16 @@
+def generate_report(findings, output_dir="data/logs"):
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+        
+    report_file = os.path.join(output_dir, f"audit_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt")
+    
+    with open(report_file, "w") as f:
+        f.write("=== PYTHON SECURITY AUDITOR REPORT ===\n\n")
+        if not findings:
+            f.write("No issues found.\n")
+        else:
+            for item in findings:
+                f.write(f"{item[0]} --> {item[1]}\n")
+    
+    print(f"\n✅ Report generated: {report_file}\n")
+    return report_file
