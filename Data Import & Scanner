@@ -1,0 +1,19 @@
+import os
+from datetime import datetime
+
+def scan_directory(base_path):
+    suspicious_files = []
+    for root, dirs, files in os.walk(base_path):
+        for file in files:
+            filepath = os.path.join(root, file)
+            try:
+                perm = oct(os.stat(filepath).st_mode)[-3:]
+                if perm == "777":
+                    suspicious_files.append((filepath, "Insecure Permission 777"))
+                if file.lower() in [".env", "id_rsa", "config.json"]:
+                    suspicious_files.append((filepath, "Sensitive Config File"))
+                if any(word in file.lower() for word in ["password", "secret", "key"]):
+                    suspicious_files.append((filepath, "Contains Sensitive Keyword"))
+            except Exception as e:
+                print(f"Error reading {filepath}: {e}")
+    return suspicious_files
